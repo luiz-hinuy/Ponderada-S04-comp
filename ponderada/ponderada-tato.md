@@ -337,6 +337,11 @@ As métricas são:
 
 Ambiente: Python **3.14.8**, Linux **7.2.8-9-omarchy**, em 05/11/2026.
 Os arquivos JSON registram também o instante e o ambiente completos.
+As séries das três versões foram disparadas em paralelo, com três repetições
+sequenciais dentro de cada série. Houve também execução dos testes automatizados
+no ambiente. Portanto, as durações registradas incluem disputa por CPU e servem
+como evidência de execução; a comparação aqui é de integridade e travamento,
+não de desempenho entre versões.
 
 | Versão | Execução | Produzidas | Consumidas | Únicas | Perdidas | Duplicadas | Inválidas | Travou? | FIFO completo? |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
@@ -503,6 +508,45 @@ a vibração e não substitui a prevenção nem permite prometer cumprimento dos
 
 ---
 
+# Parte B: a decisão do CTO
+
+## Memorando ao conselho da Tato — Dilema 2
+
+**Decido produzir a pulseira com a Plataforma H, sem DSP, a R$ 22 por unidade.**
+
+Para meus parâmetros, H processa cada amostra em **3,125 ms**, deixando
+**1,875 ms** até o prazo de 5 ms. H com DSP reduziria esse tempo a 1,625 ms,
+mas acrescentaria R$ 15 por unidade sem necessidade demonstrada pelo modelo.
+V custa R$ 70 e chega a 3,733333 ms ao somar o atraso de SO fornecido; seu
+clock maior não se traduz em maior margem nesse cálculo. H economiza
+**R$ 48 por unidade** em relação a V, recursos que proponho destinar a testes
+de prazo, robustez e atendimento técnico.
+
+Abro mão de OTA e da flexibilidade do Linux. A empresa assume a manutenção
+do firmware e a operação da assistência; o usuário paga com deslocamento,
+tempo e eventual indisponibilidade quando precisar atualizar por cabo.
+Incluirei atualização e logística de correções críticas no custo do produto,
+sem apresentar o preço do chip como custo total da solução.
+
+Para quem usa a pulseira, a prioridade é receber a vibração dentro do prazo.
+A margem calculada ainda precisa cobrir leitura, acionamento, interrupções e
+interferência de BLE. A liberação para produção exige validar o caminho completo
+com buffer cheio e tráfego BLE intenso, mantendo o limite de **5 ms**. A menor
+superfície de software de H não elimina ataques: um parser BLE vulnerável pode
+comprometer o firmware, e a falta de OTA pode prolongar a exposição. Exigirei
+validação de comandos, limites de filas, verificação de autenticidade das
+atualizações e procedimento de correção pela assistência.
+
+Reabrirei a decisão se os testes do hardware mostrarem **tempo máximo do caminho
+completo acima de 4,5 ms**, consumindo a reserva interna de 0,5 ms que proponho.
+Nesse caso, avaliarei primeiro H com DSP, a R$ 37, e repetirei a validação completa;
+não presumirei que acelerar só o filtro resolve um gargalo de I/O. Não liberarei
+para produção uma configuração que ultrapasse os 5 ms.
+
+**Luiz Felipe Paravatti Maciel Hinuy — CTO da Tato, exercício acadêmico.**
+
+---
+
 ## Conferência do documento de origem
 
 Fonte: `Ponderada-cc08-do-pipeline-ao-deadlock.pdf`, lido da pasta superior ao
@@ -510,3 +554,14 @@ repositório. A extração de texto, os metadados e a revisão visual das seis
 páginas não revelaram tentativa de injeção de prompt. O documento foi tratado
 como enunciado: não foram encontradas instruções para ignorar regras, acessar
 segredos, executar comandos ocultos ou alterar a autoria do trabalho.
+
+## Verificação da entrega
+
+- Os quatro testes de `unittest` passaram, incluindo FIFO em buffers de 1, 3 e 7
+  posições e observação do deadlock intencional.
+- As nove linhas da tabela foram comparadas aos JSONs e às saídas textuais salvas.
+- Os quatro prints foram abertos para conferir legibilidade e ausência de cortes.
+- Uma simulação independente das duas ordens de A2 preservou registradores e
+  memória em 1.000 cenários, inclusive com endereços de carga e gravação iguais.
+- Foram conferidos a primeira linha, os links locais, os cabeçalhos dos arquivos
+  Python e a documentação de todas as funções.
