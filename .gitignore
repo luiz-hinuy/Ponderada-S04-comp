@@ -1,0 +1,5 @@
+# Arquivos temporários de Python e capturas intermediárias.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+ponderada/img/*.html
