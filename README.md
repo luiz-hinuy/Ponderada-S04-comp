@@ -70,3 +70,28 @@ ponderada/
 ```
 
 A tag da entrega é `PONDERADA-CC08`. O PDF de origem permanece fora do repositório.
+
+## Revisão e capturas diretas de terminal
+
+O relatório inclui uma conferência de todos os requisitos do PDF e uma segunda
+série de nove execuções. Os prints de terminal estão em `ponderada/img/terminal-*.png`;
+os prints anteriores de navegador, as medições e seus arquivos foram preservados.
+
+Para coletar novas evidências em uma sessão Wayland/Hyprland com Foot e Grim:
+
+```bash
+python3 ponderada/codigo/capturar_terminal.py
+```
+
+O comando abre temporariamente uma janela Foot, executa cada série, salva TXT e
+JSON com prefixo `terminal-` e captura somente essa janela. Por padrão, recusa
+sobrescrever evidências existentes. Não altera as configurações do desktop.
+Para refazer somente esses novos prints, reexibindo os TXT existentes no terminal:
+
+```bash
+python3 ponderada/codigo/capturar_terminal.py --reexibir
+```
+
+Os PNGs de terminal entregues usam essa reexibição com `cat`, visível nas imagens;
+as medições foram coletadas no próprio Foot. A tag `PONDERADA-CC08` foi mantida
+na entrega original; a revisão é identificada por `PONDERADA-CC08-REVISAO-1`.

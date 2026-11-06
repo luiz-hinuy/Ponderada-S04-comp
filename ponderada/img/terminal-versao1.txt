@@ -1,0 +1,19 @@
+A4 | versão 1 | Luiz Felipe Paravatti Maciel Hinuy
+D1=4 D2=0 N=3 | 20000 amostras por execução
+Python 3.14.8 | Linux 7.2.8-9-omarchy
+Observador: encerra após 1 s sem consumo; produtor inicia 20 ms antes.
+
+Execução 1: produzidas=16316 consumidas=20000 únicas=15237
+perdidas=4763 duplicadas=4763 inválidas=0 travou=sim FIFO completo=não
+produtor: polling: buffer cheio; consumidor: concluído
+duração=1.128440 s
+
+Execução 2: produzidas=17024 consumidas=20000 únicas=15363
+perdidas=4637 duplicadas=4637 inválidas=0 travou=sim FIFO completo=não
+produtor: polling: buffer cheio; consumidor: concluído
+duração=1.106614 s
+
+Execução 3: produzidas=18747 consumidas=20000 únicas=16182
+perdidas=3818 duplicadas=3818 inválidas=0 travou=sim FIFO completo=não
+produtor: polling: buffer cheio; consumidor: concluído
+duração=1.124256 s

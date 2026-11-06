@@ -1,0 +1,19 @@
+A4 | versão 3 | Luiz Felipe Paravatti Maciel Hinuy
+D1=4 D2=0 N=3 | 20000 amostras por execução
+Python 3.14.8 | Linux 7.2.8-9-omarchy
+Observador: encerra após 1 s sem consumo; produtor inicia 20 ms antes.
+
+Execução 1: produzidas=3 consumidas=0 únicas=0
+perdidas=20000 duplicadas=0 inválidas=0 travou=sim FIFO completo=não
+produtor: retém mutex e aguarda vazio; consumidor: retém cheio e aguarda mutex
+duração=1.021593 s
+
+Execução 2: produzidas=3 consumidas=0 únicas=0
+perdidas=20000 duplicadas=0 inválidas=0 travou=sim FIFO completo=não
+produtor: retém mutex e aguarda vazio; consumidor: retém cheio e aguarda mutex
+duração=1.021643 s
+
+Execução 3: produzidas=3 consumidas=0 únicas=0
+perdidas=20000 duplicadas=0 inválidas=0 travou=sim FIFO completo=não
+produtor: retém mutex e aguarda vazio; consumidor: retém cheio e aguarda mutex
+duração=1.021966 s
