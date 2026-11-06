@@ -2,15 +2,15 @@
 
 **Autor: Luiz Felipe Paravatti Maciel Hinuy**
 
-Análise da pulseira sensorial Tato e experimentos de concorrência com buffer circular.
+Análise da pulseira sensorial Tato: arquitetura, pipeline, concorrência e decisão de produção.
 
-Leia a [atividade completa](ponderada/ponderada-tato.md) para as contas de A1,
-diagramas de A2/A3/A5, resultados de A4 e memorando da Parte B.
+A [atividade](ponderada/ponderada-tato.md) contém as Partes A e B. O código da
+A4 está em `ponderada/codigo` e os prints estão em `ponderada/img`.
 
 ## Executar A4
 
-Requisito: Python 3.10 ou superior, somente biblioteca padrão. Na raiz do
-repositório, cada comando executa uma versão com **20.000 amostras e N = 3**:
+Requisito: Python 3.10 ou superior, sem dependências externas. Execute na raiz
+do repositório. Cada comando processa 20.000 amostras com buffer de N = 3:
 
 ```bash
 python3 ponderada/codigo/versao1.py
@@ -18,80 +18,18 @@ python3 ponderada/codigo/versao2.py
 python3 ponderada/codigo/versao3.py
 ```
 
-As versões 1 e 3 têm erros intencionais. O observador encerra a medição após
-1 segundo sem consumo, registra o travamento e descarta o processo experimental.
-Isso não é uma correção do buffer. Nas três versões, o produtor inicia 20 ms
-antes do consumidor para exercitar o buffer cheio. A versão 2 deve entregar a
-sequência inteira em ordem, sem perda, duplicação ou travamento.
-
-Para repetir as nove medições e salvar os resultados em outra pasta:
+Para executar as três repetições de cada versão:
 
 ```bash
-python3 ponderada/codigo/versao1.py --repeticoes 3 --saida /tmp/tato-v1.json
-python3 ponderada/codigo/versao2.py --repeticoes 3 --saida /tmp/tato-v2.json
-python3 ponderada/codigo/versao3.py --repeticoes 3 --saida /tmp/tato-v3.json
+python3 ponderada/codigo/versao1.py --repeticoes 3
+python3 ponderada/codigo/versao2.py --repeticoes 3
+python3 ponderada/codigo/versao3.py --repeticoes 3
 ```
 
-As saídas reais e os prints da entrega ficam em [ponderada/img](ponderada/img).
-Os números da versão 1 dependem do escalonamento e podem variar entre execuções.
+As versões 1 e 3 têm erros intencionais. Após 1 s sem consumo com alguma thread
+pendente, a execução registra travamento e encerra. A versão 2 usa os semáforos
+`vazio`, `cheio` e `mutex`. Nas três versões, o produtor inicia 20 ms antes do
+consumidor para exercitar o buffer cheio. Os resultados da versão 1 podem variar
+conforme o escalonamento.
 
-## Conferir a implementação e reproduzir os prints
-
-Os testes conferem a contagem do nome, a integridade FIFO da versão 2 com
-capacidades 1, 3 e 7, a contabilidade da versão 1 e o deadlock da versão 3:
-
-```bash
-python3 -m unittest discover -s ponderada/codigo -v
-```
-
-Para recriar as capturas a partir dos TXT já salvos, instale Chromium no PATH e
-execute o utilitário opcional, que usa somente biblioteca padrão Python:
-
-```bash
-python3 ponderada/codigo/capturar_evidencias.py
-```
-
-Os prints são capturas de páginas locais com as saídas reais. A captura de
-caches usa um recorte do `lscpu`, cuja saída integral também está em `img`.
-Para atualizar medições e capturas, execute os três comandos com `--repeticoes 3`,
-direcione cada saída para o respectivo `ponderada/img/versaoX.txt` e grave o JSON
-no mesmo diretório antes de recriar os prints. Recalcule também a tabela do
-relatório: os resultados novos podem diferir dos preservados nesta entrega.
-
-## Estrutura da entrega
-
-```text
-README.md
-.gitignore
-ponderada/
-  ponderada-tato.md     # Partes A e B; D1=4, D2=0, N=3
-  codigo/              # Três versões, executor, testes e captura de evidências
-  img/                 # Prints PNG, saídas TXT e resultados JSON reais
-```
-
-A tag da entrega é `PONDERADA-CC08`. O PDF de origem permanece fora do repositório.
-
-## Revisão e capturas diretas de terminal
-
-O relatório inclui uma conferência de todos os requisitos do PDF e uma segunda
-série de nove execuções. Os prints de terminal estão em `ponderada/img/terminal-*.png`;
-os prints anteriores de navegador, as medições e seus arquivos foram preservados.
-
-Para coletar novas evidências em uma sessão Wayland/Hyprland com Foot e Grim:
-
-```bash
-python3 ponderada/codigo/capturar_terminal.py
-```
-
-O comando abre temporariamente uma janela Foot, executa cada série, salva TXT e
-JSON com prefixo `terminal-` e captura somente essa janela. Por padrão, recusa
-sobrescrever evidências existentes. Não altera as configurações do desktop.
-Para refazer somente esses novos prints, reexibindo os TXT existentes no terminal:
-
-```bash
-python3 ponderada/codigo/capturar_terminal.py --reexibir
-```
-
-Os PNGs de terminal entregues usam essa reexibição com `cat`, visível nas imagens;
-as medições foram coletadas no próprio Foot. A tag `PONDERADA-CC08` foi mantida
-na entrega original; a revisão é identificada por `PONDERADA-CC08-REVISAO-1`.
+Tag da entrega: `PONDERADA-CC08`.

@@ -61,9 +61,7 @@ def capturar(nome, comando, sobrescrever=False):
         script.write_text(
             "#!/usr/bin/env bash\nset -euo pipefail\n"
             f"cd {shlex.quote(str(RAIZ))}\n"
-            "PS4='$ '\nset -x\ndate --iso-8601=seconds\n"
-            f"{comando}\nset +x\n"
-            "printf '\\nExecução concluída. Captura direta do terminal Foot.\\n'\n"
+            f"{comando}\n"
             f"touch {shlex.quote(str(pronto))}\n"
             f"while [ ! -f {shlex.quote(str(encerrar))} ]; do sleep 0.1; done\n",
             encoding="utf-8",

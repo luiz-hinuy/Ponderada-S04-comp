@@ -102,16 +102,9 @@ H usa SRAM de um ciclo e caminhos Harvard separados, dispensando cache neste mod
 
 ### 5. Evidência da máquina
 
-Saída real do comando `lscpu`, coletada em 05/11/2026 no ambiente desta atividade:
-[texto completo](img/lscpu.txt).
+Saída do comando `lscpu --caches`: [texto](img/terminal-caches.txt).
 
-![Print da saída de lscpu com caches L1d, L1i, L2 e L3](img/caches.png)
-
-**Complemento da revisão:** captura direta do terminal Foot, exibindo a saída
-preservada de `lscpu --caches`, sem substituir o print anterior:
-[saída textual de caches](img/terminal-caches.txt).
-
-![Captura direta do terminal com as caches L1d e L1i separadas](img/terminal-caches.png)
+![Caches L1d, L1i, L2 e L3](img/terminal-caches.png)
 
 O ambiente reporta **Intel Core i5-1345U**, L1d = **320 KiB (9 instâncias)**,
 L1i = **512 KiB (9 instâncias)**, L2 = **6,5 MiB (4 instâncias)** e L3 =
@@ -339,90 +332,36 @@ As métricas são:
 - **Travou:** houve 1 s sem consumo e alguma thread não terminou.
 - **FIFO completo:** a sequência inteira recebida é exatamente `list(range(20000))`.
 
-### Nove execuções reais
+### Resultados
 
 Ambiente: Python **3.14.8**, Linux **7.2.8-9-omarchy**, em 05/11/2026.
-Os arquivos JSON registram também o instante e o ambiente completos.
-As séries das três versões foram disparadas em paralelo, com três repetições
-sequenciais dentro de cada série. Houve também execução dos testes automatizados
-no ambiente. Portanto, as durações registradas incluem disputa por CPU e servem
-como evidência de execução; a comparação aqui é de integridade e travamento,
-não de desempenho entre versões.
+Cada versão foi executada três vezes com 20.000 amostras e N = 3.
+As séries foram executadas sequencialmente.
 
-| Versão | Execução | Produzidas | Consumidas | Únicas | Perdidas | Duplicadas | Inválidas | Travou? | FIFO completo? |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | 1 | 19.209 | 20.000 | 15.118 | 4.882 | 4.882 | 0 | Sim | Não |
-| 1 | 2 | 19.556 | 20.000 | 17.578 | 2.422 | 2.422 | 0 | Sim | Não |
-| 1 | 3 | 20.000 | 19.702 | 17.744 | 2.256 | 1.958 | 0 | Sim | Não |
-| 2 | 1 | 20.000 | 20.000 | 20.000 | 0 | 0 | 0 | Não | Sim |
-| 2 | 2 | 20.000 | 20.000 | 20.000 | 0 | 0 | 0 | Não | Sim |
-| 2 | 3 | 20.000 | 20.000 | 20.000 | 0 | 0 | 0 | Não | Sim |
-| 3 | 1 | 3 | 0 | 0 | 20.000 | 0 | 0 | Sim | Não |
-| 3 | 2 | 3 | 0 | 0 | 20.000 | 0 | 0 | Sim | Não |
-| 3 | 3 | 3 | 0 | 0 | 20.000 | 0 | 0 | Sim | Não |
+| Versão | Execução | Consumidas | Perdidas | Duplicadas | Travou? |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 1 | 1 | 20.000 | 4.763 | 4.763 | Sim |
+| 1 | 2 | 20.000 | 4.637 | 4.637 | Sim |
+| 1 | 3 | 20.000 | 3.818 | 3.818 | Sim |
+| 2 | 1 | 20.000 | 0 | 0 | Não |
+| 2 | 2 | 20.000 | 0 | 0 | Não |
+| 2 | 3 | 20.000 | 0 | 0 | Não |
+| 3 | 1 | 0 | 20.000 | 0 | Sim |
+| 3 | 2 | 0 | 20.000 | 0 | Sim |
+| 3 | 3 | 0 | 20.000 | 0 | Sim |
 
-Resultados completos, incluindo estados das threads, prefixo/sufixo da sequência
-e duração: [V1 JSON](img/versao1.json), [V2 JSON](img/versao2.json),
-[V3 JSON](img/versao3.json). Saídas textuais preservadas:
-[V1](img/versao1.txt), [V2](img/versao2.txt), [V3](img/versao3.txt).
+Saídas completas: [V1](img/terminal-versao1.txt),
+[V2](img/terminal-versao2.txt) e [V3](img/terminal-versao3.txt).
+Dados estruturados: [V1 JSON](img/terminal-versao1.json),
+[V2 JSON](img/terminal-versao2.json) e [V3 JSON](img/terminal-versao3.json).
 
-### Prints das saídas reais
+### Prints
 
-As imagens abaixo são capturas de navegador de páginas locais que exibem as
-saídas textuais preservadas, sem editar os valores. O script de captura está
-em [capturar_evidencias.py](codigo/capturar_evidencias.py).
+![Resultados da versão 1](img/terminal-versao1.png)
 
-![Print das três execuções da versão 1](img/versao1.png)
+![Resultados da versão 2](img/terminal-versao2.png)
 
-![Print das três execuções da versão 2](img/versao2.png)
-
-![Print das três execuções da versão 3](img/versao3.png)
-
-### Complemento da revisão: novas execuções e prints de terminal
-
-Os prints anteriores e seus TXT/JSON foram mantidos integralmente. Na revisão
-de 05/11/2026, executei **outras três repetições de cada versão** diretamente no
-terminal Foot, com 20.000 amostras e N = 3. Desta vez, as séries das versões
-foram executadas uma após a outra, sem disparar os testes automatizados junto.
-O código e o protocolo de início do produtor 20 ms antes do consumidor são os
-mesmos; portanto, os resultados da V1 continuam sujeitos ao escalonamento.
-
-| Versão | Execução | Produzidas | Consumidas | Únicas | Perdidas | Duplicadas | Inválidas | Travou? | FIFO completo? |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | 1 | 16.316 | 20.000 | 15.237 | 4.763 | 4.763 | 0 | Sim | Não |
-| 1 | 2 | 17.024 | 20.000 | 15.363 | 4.637 | 4.637 | 0 | Sim | Não |
-| 1 | 3 | 18.747 | 20.000 | 16.182 | 3.818 | 3.818 | 0 | Sim | Não |
-| 2 | 1 | 20.000 | 20.000 | 20.000 | 0 | 0 | 0 | Não | Sim |
-| 2 | 2 | 20.000 | 20.000 | 20.000 | 0 | 0 | 0 | Não | Sim |
-| 2 | 3 | 20.000 | 20.000 | 20.000 | 0 | 0 | 0 | Não | Sim |
-| 3 | 1 | 3 | 0 | 0 | 20.000 | 0 | 0 | Sim | Não |
-| 3 | 2 | 3 | 0 | 0 | 20.000 | 0 | 0 | Sim | Não |
-| 3 | 3 | 3 | 0 | 0 | 20.000 | 0 | 0 | Sim | Não |
-
-Os TXT foram gravados com `tee` durante a execução no terminal:
-[V1 TXT](img/terminal-versao1.txt), [V2 TXT](img/terminal-versao2.txt),
-[V3 TXT](img/terminal-versao3.txt). Os dados estruturados correspondentes são
-[V1 JSON](img/terminal-versao1.json), [V2 JSON](img/terminal-versao2.json) e
-[V3 JSON](img/terminal-versao3.json).
-
-As imagens abaixo são **capturas diretas da janela do terminal**, feitas com
-Grim. Para reenquadrar a mesma saída sem gerar outros resultados, os TXT da
-nova série foram reexibidos via `cat`, comando visível nos prints. Nenhum valor
-foi alterado. O utilitário [capturar_terminal.py](codigo/capturar_terminal.py)
-documenta tanto a coleta quanto essa reexibição.
-
-![Captura do terminal com as três execuções adicionais da versão 1](img/terminal-versao1.png)
-
-![Captura do terminal com as três execuções adicionais da versão 2](img/terminal-versao2.png)
-
-![Captura do terminal com as três execuções adicionais da versão 3](img/terminal-versao3.png)
-
-As conclusões permanecem: V2 entrega a sequência inteira sem perda nem repetição;
-V3 entra em espera circular com o buffer cheio. Na nova série da V1, as três
-consumidoras chegaram a 20.000 leituras repetindo IDs e encerraram antes de os
-produtores terminarem; após 1 s sem consumo com produtor pendente, o observador
-registrou travamento. A série original mostra também o caso inverso, em que o
-produtor termina e o consumidor fica esperando.
+![Resultados da versão 3](img/terminal-versao3.png)
 
 ### Região crítica e falha da V1
 
@@ -444,12 +383,10 @@ efetivamente disponíveis. O consumidor pode reler uma posição antiga; o produ
 pode sobrescrever uma amostra ainda não consumida. Índices separados de leitura
 e escrita não corrigem a ausência de coordenação.
 
-Nas execuções 1 e 2, o consumidor chegou a 20.000 leituras com duplicações,
-encerrou seu laço, mas o produtor ainda estava preso em buffer supostamente
-cheio. O observador registrou ausência de consumo por 1 s com produtor pendente.
-Na execução 3, o produtor terminou e o consumidor ficou esperando uma ocupação
-que não reapareceu. Os resultados variam conforme o escalonamento; não fixei
-perdas ou duplicações no código.
+Nas três execuções da V1, o consumidor chegou a 20.000 leituras com duplicações
+antes de o produtor terminar. O produtor ficou preso em buffer supostamente
+cheio; após 1 s sem consumo com uma thread pendente, o observador registrou
+travamento. As perdas e duplicações variam conforme o escalonamento.
 
 ### O que cada semáforo garante na V2
 
@@ -596,78 +533,3 @@ não presumirei que acelerar só o filtro resolve um gargalo de I/O. Não libera
 para produção uma configuração que ultrapasse os 5 ms.
 
 **Luiz Felipe Paravatti Maciel Hinuy — CTO da Tato, exercício acadêmico.**
-
----
-
-## Conferência do documento de origem
-
-Fonte: `Ponderada-cc08-do-pipeline-ao-deadlock.pdf`, lido da pasta superior ao
-repositório. A extração de texto, os metadados e a revisão visual das seis
-páginas não revelaram tentativa de injeção de prompt. O documento foi tratado
-como enunciado: não foram encontradas instruções para ignorar regras, acessar
-segredos, executar comandos ocultos ou alterar a autoria do trabalho.
-
-## Verificação da entrega
-
-- Os quatro testes de `unittest` passaram, incluindo FIFO em buffers de 1, 3 e 7
-  posições e observação do deadlock intencional.
-- As nove linhas da tabela foram comparadas aos JSONs e às saídas textuais salvas.
-- Os quatro prints foram abertos para conferir legibilidade e ausência de cortes.
-- Uma simulação independente das duas ordens de A2 preservou registradores e
-  memória em 1.000 cenários, inclusive com endereços de carga e gravação iguais.
-- Foram conferidos a primeira linha, os links locais, os cabeçalhos dos arquivos
-  Python e a documentação de todas as funções.
-
-## Segunda revisão: conferência requisito por requisito
-
-Conferência contra as seis páginas do PDF, em 05/11/2026. As evidências de terminal
-foram acrescentadas sem apagar a entrega inicial. Não foi identificada nova
-tentativa de injeção de prompt; o PDF também não contém JavaScript nem anexos,
-conforme `pdfinfo` e `pdfdetach -list`.
-
-| Requisito do enunciado | Resultado da revisão e localização |
-| --- | --- |
-| Nome completo, D1, D2 e N na primeira linha | Atendido: primeira linha; contagem 4 + 6 + 9 + 6 + 5 = 30 |
-| IC, taxa de falta e N individuais | Atendido: IC = 100.000; m = 5%; N = 3; seção de parâmetros |
-| Parte A antes da Parte B, com desenvolvimento das contas | Atendido: seções A1 a A5 seguidas do memorando |
-| A1.1: tempo de H e prazo de 5 ms | Atendido: 3,125 ms, margem de 1,875 ms e fórmula explícita |
-| A1.2: AMAT, CPI, tempo de V e atraso de SO | Atendido: 7 ciclos, CPI 8,8, 0,733333 ms e 3,733333 ms com SO |
-| A1.3: Amdahl e novo tempo de H | Atendido: speedup 1,923077 e 1,625 ms, incluindo conferência por parcelas |
-| A1.4: cache e gargalo de Von Neumann em até cinco linhas | Atendido: quatro linhas explícitas na seção A1.4 |
-| A1.5: print das caches e classificação da arquitetura | Atendido: print original e novo print do terminal; L1 dividida e Harvard modificada |
-| A2.1: dependências RAW por instrução/registrador | Atendido: quatro dependências diretas, com ressalva sobre x6 transitivo |
-| A2.2: pipeline sem forwarding e total | Atendido: diagrama ciclo a ciclo, 6 bolhas e 17 ciclos |
-| A2.3: pipeline com forwarding e bolhas restantes | Atendido: diagrama, duas dependências load-use e 13 ciclos |
-| A2.4: reordenação, preservação do resultado e total | Atendido: nova ordem, justificativa de endereços e 11 ciclos sem bolhas |
-| A3.1: tarefas, threads/processos e custos | Atendido: três threads de controle, processo BLE e justificativa de memória, custo e isolamento |
-| A3.2: impacto de uma exploração do BLE | Atendido: diferença de espaço de endereços, privilégios e validação do IPC |
-| A3.3: estados e estado predominante do sensor | Atendido: diagrama Mermaid e espera bloqueada por evento/temporizador |
-| A4.1: contador, espera ocupada e sleep(0) entre leitura/escrita | Atendido: ramo V1 de experimento.py, com observador de 1 s sem consumo |
-| A4.2: três semáforos e valores iniciais | Atendido: vazio = N, cheio = 0 e mutex = 1; ramo V2 |
-| A4.3: produtor com mutex antes de vazio | Atendido: única inversão de ordem do ramo V3 em relação ao V2 |
-| A4: três execuções por versão com 20.000 amostras | Atendido: série original de nove execuções mais série adicional de nove |
-| A4: tabela, pelo menos um print por versão e explicações | Atendido: duas tabelas; prints originais e de terminal; região crítica e semáforos explicados |
-| A5.1: sequência e grafo de alocação | Atendido: seis passos e grafo com arestas de alocação/requisição identificadas |
-| A5.2: quatro condições necessárias ao deadlock | Atendido: tabela das condições de Coffman aplicada às três threads |
-| A5.3: duas correções de tipos diferentes e impacto no usuário | Atendido: prevenção por ordem global e detecção/recuperação com cancelamento |
-| Parte B: escolher um dilema e decidir na primeira frase | Atendido: Dilema 2; decisão por H sem DSP na primeira frase |
-| Parte B: custo, quem paga, número da Parte A e impacto/segurança | Atendido: manutenção por cabo, custo ao usuário, 3,125 ms, margem e risco de BLE |
-| Parte B: condição concreta para mudar de ideia | Atendido: reavaliar se o caminho completo exceder 4,5 ms |
-| Parte B: memorando de no máximo uma página | Atendido: 330 palavras; conferido em A4, Arial 12 pt, margens de 20 mm e entrelinha 1,2 |
-| Raiz com apenas README.md, .gitignore e ponderada | Atendido na árvore versionada; diretórios internos do Git e do ambiente não são artefatos da entrega |
-| ponderada/ponderada-tato.md, codigo e img | Atendido: caminhos mantidos; PDF de origem permanece fora do repositório |
-| README com nome, descrição e comando único por versão | Atendido: seção Executar A4, com três comandos Python independentes |
-| Cabeçalho de cada arquivo de código e documentação de funções | Atendido: docstrings de módulo e funções, inclusive nos utilitários de captura |
-| Tag PONDERADA-CC08 na data da entrega | Atendido: tag original criada em 05/11/2026 e preservada; revisão identificada separadamente |
-| Identidade e proporção dos commits solicitadas pelo autor | Novos commits registrados com autor e committer luiz-hinuy, sem coautoria e com horários reais |
-
-As hipóteses que afetam a interpretação continuam explícitas: os 120 ciclos são
-tratados como penalidade adicional no AMAT; o forwarding inclui o dado do `sw`;
-o tempo de V calculado com taxa média de faltas não é uma prova de WCET; e os
-5 ms são uma exigência do produto analisado, não uma garantia de tempo real
-fornecida pelo experimento Python no computador.
-
-Após os acréscimos, os quatro testes passaram novamente e as 18 linhas das duas
-tabelas foram comparadas aos respectivos JSONs. As 11 evidências originais de
-`img` foram comparadas byte a byte com a entrega anterior e permaneceram idênticas.
-As alterações desta revisão são acréscimos; nenhum artefato original foi removido.
