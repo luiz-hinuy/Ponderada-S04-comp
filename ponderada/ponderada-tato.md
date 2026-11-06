@@ -102,7 +102,7 @@ H usa SRAM de um ciclo e caminhos Harvard separados, dispensando cache neste mod
 
 ### 5. Evidência da máquina
 
-Saída do comando `lscpu --caches`: [texto](img/terminal-caches.txt).
+Saída do comando `lscpu --caches`:
 
 ![Caches L1d, L1i, L2 e L3](img/terminal-caches.png)
 
@@ -349,11 +349,6 @@ As séries foram executadas sequencialmente.
 | 3 | 1 | 0 | 20.000 | 0 | Sim |
 | 3 | 2 | 0 | 20.000 | 0 | Sim |
 | 3 | 3 | 0 | 20.000 | 0 | Sim |
-
-Saídas completas: [V1](img/terminal-versao1.txt),
-[V2](img/terminal-versao2.txt) e [V3](img/terminal-versao3.txt).
-Dados estruturados: [V1 JSON](img/terminal-versao1.json),
-[V2 JSON](img/terminal-versao2.json) e [V3 JSON](img/terminal-versao3.json).
 
 ### Prints
 
